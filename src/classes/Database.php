@@ -2,9 +2,9 @@
 
 namespace App\classes;
 
-
+require_once  __DIR__ . '/../../config.php';
 use Dotenv\Dotenv;
-
+use config\config;
 class Database
 {
     private $connection;
@@ -13,18 +13,17 @@ class Database
     {
 
 
-        $serverName = 'GEP0174';
         $connectionInfo = array(
-            "UID" => 'web',
-            "PWD" => 'web123',
-            "Database" => 'vyw_6029',
+            "UID" => config::DB_LOGIN,
+            "PWD" => config::DB_PASSWORD,
+            "Database" => config::DB_CATALOG,
             "APP" => "WebVectory",
             "MultipleActiveResultSets" => false,
             'CharacterSet' => 'UTF-8',
             "Encrypt" => 1,
             "TrustServerCertificate" => 1
         );
-        $this->connection = sqlsrv_connect($serverName, $connectionInfo);
+        $this->connection = sqlsrv_connect(config::DB_HOST, $connectionInfo);
 
         if (!$this->connection) {
             $errors = sqlsrv_errors();

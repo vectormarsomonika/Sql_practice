@@ -15,8 +15,13 @@ $searchValue = $_GET['search']['value'] ?? null;
 $data = $repo->getCikkek((int)$start, (int)$length,$searchValue);
 
 header('Content-Type: application/json');
-echo json_encode([
-    "recordsTotal" => 1000,
-    "recordsFiltered" => 1000,
-    "data" => $data
-]);
+try {
+    echo json_encode([
+        "recordsTotal" => 1000,
+        "recordsFiltered" => 1000,
+        "data" => $data
+    ], JSON_THROW_ON_ERROR);
+} catch (JsonException $e) {
+ throw new Exception($e->getMessage());
+
+}
