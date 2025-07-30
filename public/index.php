@@ -1,3 +1,12 @@
+<?php
+
+define('ROOT', substr(($_SERVER['DOCUMENT_ROOT'] ?? ""), 0, 0));
+
+require_once $_SERVER['DOCUMENT_ROOT'] . '/src/modules/CikkList.php';
+
+use App\modules\CikkList;
+
+?>
 
 <!DOCTYPE html>
 <html>
@@ -7,34 +16,30 @@
 
 </head>
 <body>
-<table id='cikkekTable'>
-    <thead>
-    <tr>
-        <th>Cikkszám</th>
-        <th>Cikknév</th>
-        <th>Kiszerelés</th>
-        <th>Mérték egység</th>
-        <th>Beszerzési ár</th>
-        <th>Pénznem</th>
-    </tr>
-    </thead>
-</table>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<button id="btnCikkekTable">Ügyfelek</button>
+<button id="btnUgyfelekTable">Cikkek</button>
+<?php
+
+print CikkList::getTemplate();
+?>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css">
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
 <script>
     $(document).ready(function () {
         $('#cikkekTable').DataTable({
             "processing": true,
             "serverSide": true,
+            "responsive": true,
             "ajax": "api/cikkData.php",
             "columns": [
-                { "data": "ETK" },
-                { "data": "CIKKNEV1" },
-                { "data": "Kiszereles" },
-                { "data": "MEROV1" },
-                { "data": "CUTBESZAR" },
-                { "data": "CUTBEDN" }
+                {"data": "ETK"},
+                {"data": "CIKKNEV1"},
+                {"data": "Kiszereles"},
+                {"data": "MEROV1"},
+                {"data": "CUTBESZAR"},
+                {"data": "CUTBEDN"}
 
             ]
         });

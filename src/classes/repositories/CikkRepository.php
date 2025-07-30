@@ -29,6 +29,8 @@ class CikkRepository
         $params[] = $start;
         $params[] = $length;
 
+
+        //database dolgozza fel
         $stmtData = sqlsrv_query($this->connection, $sqlData, $params);
 
         if ($stmtData === false) {
