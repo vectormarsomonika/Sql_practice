@@ -2,17 +2,16 @@
 
 namespace App\classes;
 
-require_once  __DIR__ . '/../../config.php';
-use Dotenv\Dotenv;
+require_once __DIR__ . '/../../config.php';
+
 use config\config;
+
 class Database
 {
     private $connection;
 
     public function __construct()
     {
-
-
         $connectionInfo = array(
             "UID" => config::DB_LOGIN,
             "PWD" => config::DB_PASSWORD,
@@ -34,15 +33,29 @@ class Database
 
     }
 
-    public function getConnection()
+
+    public function query($query, $params)
     {
-        return $this->connection;
+
+        // Logolás : dátum -  query- params
+
+        return $this->prepare($query, $params);
     }
 
-    public function destruct()
+    public function prepare($query, $params): array
     {
-        if ($this->connection) {
-            sqlsrv_close($this->connection);
+        $stmtData = sqlsrv_query($this->connection, $query, $params);
+
+        if ($stmtData === false) {
+            die(print_r(sqlsrv_errors(), true));
         }
+
+        while ($row = sqlsrv_fetch_array($stmtData, SQLSRV_FETCH_ASSOC)) {
+            $data[] = $row;
+        }
+
+        return $data ?? [];
     }
+
+
 }

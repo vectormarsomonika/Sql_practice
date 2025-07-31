@@ -1,27 +1,24 @@
 <?php
 
-use App\classes\Database;
-use App\classes\repositories\CikkRepository;
+
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-$db = new Database();
-$conn = $db->getConnection();
-$repo = new CikkRepository($conn);
+$repo = new \App\modules\UgyfelList();
 
 $start = $_GET['start'] ?? 0;
 $length = $_GET['length'] ?? 10;
 $searchValue = $_GET['search']['value'] ?? null;
 
-$data = $repo->getCikkek((int)$start, (int)$length,$searchValue);
+$data = $repo->getUgyfelek((int)$start, (int)$length,$searchValue);
 
 header('Content-Type: application/json');
 try {
     echo json_encode([
-        "recordsTotal" => 1000,
-        "recordsFiltered" => 1000,
+        "recordsTotal" => 100,
+        "recordsFiltered" => 100,
         "data" => $data
     ], JSON_THROW_ON_ERROR);
 } catch (JsonException $e) {
- throw new Exception($e->getMessage());
+    throw new Exception($e->getMessage());
 
 }

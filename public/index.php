@@ -1,11 +1,26 @@
 <?php
 
+
+$requestUri = $_SERVER['REQUEST_URI'];
+
+if (str_starts_with($requestUri, '/api/ugyfelData')) {
+    require_once __DIR__ . '/../src/api/ugyfelData.php';
+    exit;
+}
+
+if (str_starts_with($requestUri, '/api/cikkData')) {
+    require_once __DIR__ . '/../src/api/cikkData.php';
+    exit;
+}
+
+// Ha nem API, akkor jöhet a normál oldal betöltés
 define('ROOT', substr(($_SERVER['DOCUMENT_ROOT'] ?? ""), 0, 0));
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/src/modules/CikkList.php';
+require_once __DIR__ . '/../src/modules/CikkList.php';
+require_once __DIR__ . '/../src/modules/UgyfelList.php';
 
 use App\modules\CikkList;
-
+use App\modules\UgyfelList;
 ?>
 
 <!DOCTYPE html>
@@ -16,33 +31,31 @@ use App\modules\CikkList;
 
 </head>
 <body>
-<button id="btnCikkekTable">Ügyfelek</button>
-<button id="btnUgyfelekTable">Cikkek</button>
+<button id="btnCikkekTable">Cikkek</button>
+<button id="btnUgyfelekTable">Ügyfelek</button>
 <?php
-
-print CikkList::getTemplate();
+print UgyfelList::getUgyfelTemplate();
+print CikkList::getCikkTemplate();
 ?>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css">
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
 <script>
-    $(document).ready(function () {
-        $('#cikkekTable').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "responsive": true,
-            "ajax": "api/cikkData.php",
-            "columns": [
-                {"data": "ETK"},
-                {"data": "CIKKNEV1"},
-                {"data": "Kiszereles"},
-                {"data": "MEROV1"},
-                {"data": "CUTBESZAR"},
-                {"data": "CUTBEDN"}
 
-            ]
-        });
+    $(document).ready(function () {
+        $('#btnCikkekTable').click(function () {
+            $('#cikkTableBox').show();
+            $('#ugyfelTableBox').hide()
+        })
+        $('#btnUgyfelekTable').click(function () {
+            $('#ugyfelTableBox').show();
+            $('#cikkTableBox').hide();
+        })
+        <?php
+        print CikkList::getJs();
+        print UgyfelList::getjs();
+        ?>
     });
 </script>
 </html>
