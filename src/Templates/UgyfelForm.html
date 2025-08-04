@@ -1,0 +1,48 @@
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <form method="POST" id="ugyfelForm" >
+      <label for="kod">Kód:</label>
+      <input type="number" name="kod" id="kod" required>
+
+      <label for="nev">Cégnév:</label>
+      <input type="text" name="nev" id="nev" required>
+
+      <label for="ugyfelNev">Ügyfél teljes neve:</label>
+      <input type="text" name="ugyfelNev" id="ugyfelNev" required>
+
+      <label for="varos">Város:</label>
+      <input type="text" name="varos" id="varos" required>
+
+      <label for="irsz">Irányítószám:</label>
+      <input type="text" name="irsz" id="irsz" required>
+
+      <label for="utcaHazSzam">Utca, házszám:</label>
+      <input type="text" name="utcaHazSzam" id="utcaHazSzam" required>
+
+      <label for="bankszamlaSzam">Bankszámlaszám:</label>
+      <input type="text" name="bankszamlaSzam" id="bankszamlaSzam" required>
+
+      <label for="kozpontKod">KözpontKód:</label>
+      <input type="number" name="kozpontKod" id="kozpontKod" required>
+
+      <label for="adoSzam">Adószám:</label>
+      <input type="text" name="adoSzam" id="adoSzam" required>
+
+      <label for="fizetesiModVevo">Fizetési mód (vevő):</label>
+      <input type="number" name="fizetesiModVevo" id="fizetesiModVevo" required>
+
+      <label for="fizetesiModSzallito">Fizetési mód (szállító):</label>
+      <input type="number" name="fizetesiModSzallito" id="fizetesiModSzallito" required>
+
+      <label for="besorolas">Besorolás:</label>
+      <select name="besorolas" id="besorolas" required>
+        <option value="1">Besorolás 1</option>
+        <option value="2">Besorolás 2</option>
+      </select>
+      <input type="hidden" name="kapcsolok" id="kapcsolok" value="1020">
+
+      <button type="submit">Mentés</button>
+      <button type="button" data-dismiss="modal">Mégse</button>
+    </form>
+  </div>
+</div>

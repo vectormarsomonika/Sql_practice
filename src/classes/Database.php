@@ -8,11 +8,12 @@ use config\config;
 
 class Database
 {
-    private $connection;
 
+    protected $_connection = false;
+    protected $_connectionInfo = [];
     public function __construct()
     {
-        $connectionInfo = array(
+        $this->_connectionInfo = array(
             "UID" => config::DB_LOGIN,
             "PWD" => config::DB_PASSWORD,
             "Database" => config::DB_CATALOG,
@@ -22,29 +23,35 @@ class Database
             "Encrypt" => 1,
             "TrustServerCertificate" => 1
         );
-        $this->connection = sqlsrv_connect(config::DB_HOST, $connectionInfo);
 
-        if (!$this->connection) {
-            $errors = sqlsrv_errors();
-            $errorMessage = "Connection to database failed:\n" . print_r($errors, true);
-            throw new \RuntimeException($errorMessage);
+    }
+
+    /**
+     * @return false|resource
+     */
+    protected function getConnection(){
+        if(empty($this->_connection)){
+            $this->_connection = sqlsrv_connect(config::DB_HOST, $this->_connectionInfo);
+
         }
-
-
+        return $this->_connection;
     }
 
 
     public function query($query, $params)
     {
 
-        // Logolás : dátum -  query- params
+        $connection = $this->getConnection();
+        if(empty($connection)){
+            return false;
+        }
 
-        return $this->prepare($query, $params);
+        return $this->prepare($connection, $query, $params);
     }
 
-    public function prepare($query, $params): array
+    public function prepare($connection,$query, $params): array
     {
-        $stmtData = sqlsrv_query($this->connection, $query, $params);
+        $stmtData = sqlsrv_query($connection, $query, $params);
 
         if ($stmtData === false) {
             die(print_r(sqlsrv_errors(), true));
@@ -55,6 +62,24 @@ class Database
         }
 
         return $data ?? [];
+    }
+
+    public function execute(string $query, array $params = []): array | bool
+    {
+        $connection = $this->getConnection();
+        if(empty($connection)){
+            return false;
+        }
+
+        $stmt = sqlsrv_query($connection, $query, $params);
+
+        if ($stmt === false) {
+            $errors = sqlsrv_errors();
+            $message = "SQL Server Error: " . print_r($errors, true);
+            throw new \RuntimeException($message);
+        }
+
+        return true;
     }
 
 

@@ -11,6 +11,10 @@ class UgyfelList
     {
         return file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/../src/templates/UgyfelList.html");
     }
+    public static function getUgyfelFormTemplate(): string
+    {
+        return file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/../src/templates/UgyfelForm.html");
+    }
 
     public static function getJs(): string{
         return file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/../src/assets/UgyfelList.js");
